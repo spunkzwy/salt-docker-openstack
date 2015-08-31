@@ -1,3 +1,4 @@
 dev:
    '*':
+     - common
      - mariadb

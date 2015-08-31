@@ -1,9 +1,14 @@
-Ensure_config_template_dir_exists:
-  file.directory:
-   - name: salt['pillar.get']('node_templates_directory:service_name')
-   - makedirs: True
+pull image:
+    docker.pulled:
+      - name: kollaglue/centos-rdo-mariadb-app
+      - tag: kilo
 
-Ensure_confige_dir_exists:
-   file.directory:
-   - name: salt['pillar.get']('node_confi_directory:service_name')
-   - makedirs: True
+galera.cnf:
+    file.managed:
+    - name: {{ salt['pillar.get']('node_config_directory') }}galera.cnf
+    - source: salt://mariadb/galera.cnf.j2
+    - user: root
+    - template: jinja
+    - defaults:
+        api_interface: {{ salt['pillar.get']('api_interface') }}
+        var2: 2
